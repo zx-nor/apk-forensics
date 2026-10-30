@@ -1,0 +1,28 @@
+BLACKBOX FORENSICS - BUILD ENVIRONMENT REPORT
+Generated during sandbox inspection. Verified facts only.
+
+OS: Ubuntu 24.04.4 LTS, x86_64, 4 GB RAM, 1 CPU.
+
+AVAILABLE AND VERIFIED
+- OpenJDK 21.0.12 (javac, jar) from Ubuntu archive.
+- Kotlin compiler 2.4.21 (kotlinc-jvm), downloaded from GitHub release,
+  SHA-256 verified against published checksum.
+- JUnit 5.10.1 (Ubuntu junit5 package); console standalone 1.9.1 runs tests.
+  Smoke test: Kotlin compile + JUnit run, 1/1 passed.
+- Ubuntu aapt 0.2, aapt2, apksigner, zipalign (old Debian packages).
+
+NOT AVAILABLE
+- Android SDK platform for API 29+ (only android-23 from Ubuntu).
+- Android build tools modern enough for AGP (no D8/R8 from Google).
+- Gradle distribution and Android Gradle Plugin (services.gradle.org and
+  plugins.gradle.org unreachable).
+- Maven Central / Google Maven (repo1, repo.maven.apache.org, dl.google.com
+  all unreachable). Therefore Room, Compose, AndroidX, and Kotlin stdlib
+  artifacts cannot be fetched by Gradle here.
+- Android emulator / device.
+
+CONSEQUENCE
+A release APK built with the Android Gradle Plugin cannot be produced in this
+sandbox. The pure-Kotlin engine modules can be compiled and tested here.
+Android-specific modules must be built in Android Studio on the developer's
+machine.
