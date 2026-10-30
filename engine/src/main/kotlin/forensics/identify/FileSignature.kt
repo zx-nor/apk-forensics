@@ -73,6 +73,13 @@ data class FileSignature(
                 b(0x7F, 0x45, 0x4C, 0x46), setOf("so", "elf", "o")),
             FileSignature("tar-ustar", "TAR archive (ustar)", "application/x-tar", 257,
                 s("ustar"), setOf("tar")),
+            FileSignature("tiff-le", "TIFF image (little-endian)", "image/tiff", 0,
+                b(0x49, 0x49, 0x2A, 0x00), setOf("tif", "tiff")),
+            FileSignature("tiff-be", "TIFF image (big-endian)", "image/tiff", 0,
+                b(0x4D, 0x4D, 0x00, 0x2A), setOf("tif", "tiff")),
+            // ISO base media files carry "ftyp" at offset 4; the brand refines MP4/MOV/M4A/HEIC.
+            FileSignature("mp4", "ISO base media file (MP4/MOV family)", "video/mp4", 4,
+                s("ftyp"), setOf("mp4", "m4v", "m4a", "mov", "heic", "heif")),
         )
     }
 }

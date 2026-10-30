@@ -11,15 +11,14 @@ OUT="$ROOT/build"
 rm -rf "$OUT" && mkdir -p "$OUT/main" "$OUT/test"
 
 echo "== compile main =="
-"$KOTLINC" -jvm-target 17 -Werror=false "$ROOT"/engine/src/main/kotlin -d "$OUT/main" 2>&1 | grep -v "^warning:" || true
-[ -d "$OUT/main/forensics" ] || { echo "MAIN COMPILE FAILED"; exit 1; }
+"$KOTLINC" -jvm-target 17 "$ROOT"/engine/src/main/kotlin -d "$OUT/main" 2> "$OUT/main.err" || { cat "$OUT/main.err"; echo "MAIN COMPILE FAILED"; exit 1; }
+grep -v "^warning:" "$OUT/main.err" | grep -v "^$" | head -20 || true
 
 echo "== compile tests =="
-"$KOTLINC" -jvm-target 17 -cp "$OUT/main:$JUNIT_API" "$ROOT"/engine/src/test/kotlin -d "$OUT/test" 2>&1 | grep -v "^warning:" || true
-[ -n "$(find "$OUT/test" -name '*.class' 2>/dev/null)" ] || { echo "TEST COMPILE FAILED"; exit 1; }
+"$KOTLINC" -jvm-target 17 -cp "$OUT/main:$JUNIT_API" "$ROOT"/engine/src/test/kotlin -d "$OUT/test" 2> "$OUT/test.err" || { cat "$OUT/test.err"; echo "TEST COMPILE FAILED"; exit 1; }
+grep -v "^warning:" "$OUT/test.err" | grep -v "^$" | head -20 || true
 
 echo "== run tests =="
-cp -r "$ROOT/engine/src/test/resources/." "$OUT/test/" 2>/dev/null || true
 cd "$ROOT/engine"
 java -jar "$JUNIT_CONSOLE" --class-path "$OUT/main:$OUT/test:$JUNIT_API:/opt/kotlin/kotlinc/lib/kotlin-stdlib.jar" \
-  --scan-class-path "$OUT/test" --details=tree --disable-banner
+  --scan-class-path "$OUT/test" --details=summary --disable-banner --disable-ansi-colors

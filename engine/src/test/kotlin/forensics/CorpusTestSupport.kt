@@ -13,6 +13,15 @@ object CorpusTestSupport {
             ?: error("Corpus not found. Run from project root or engine/. Checked: $candidates")
     }
 
+    /** Milestone 2 corpus, with independently generated expectations in expected_m2.tsv. */
+    val corpus2Dir: File by lazy {
+        listOf(File("src/test/resources/corpus2"), File("engine/src/test/resources/corpus2"))
+            .firstOrNull { File(it, "expected_m2.tsv").exists() }
+            ?: error("corpus2 not found")
+    }
+
+    fun file2(name: String): File = File(corpus2Dir, name).also { check(it.exists()) { "Missing: $name" } }
+
     fun file(name: String): File = File(dir, name).also {
         check(it.exists()) { "Missing corpus file: $name" }
     }

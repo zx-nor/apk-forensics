@@ -1,0 +1,230 @@
+file	key	value
+report.docx	refined	docx
+report.docx	zipkind	DOCX
+report.docx	meta.status	EXTRACTED
+report.docx	field:OOXML.core|Title	Quarterly Report
+report.docx	field:OOXML.core|Creator	Alice Analyst
+report.docx	field:OOXML.core|LastModifiedBy	Bob Editor
+report.docx	field:OOXML.core|Revision	4
+report.docx	field:OOXML.core|Created	2024-05-01T10:00:00Z
+report.docx	field:OOXML.core|Keywords	finance; Q3
+report.docx	field:OOXML.app|Application	Microsoft Office Word
+report.docx	field:OOXML.app|Pages	3
+report.docx	field:OOXML.custom|Project	Falcon
+report.docx	mismatch	false
+workbook.xlsx	refined	xlsx
+workbook.xlsx	zipkind	XLSX
+workbook.xlsx	meta.status	EXTRACTED
+workbook.xlsx	field:OOXML.app|Company	Acme Corp
+deck.pptx	refined	pptx
+deck.pptx	zipkind	PPTX
+deck.pptx	meta.status	NO_METADATA_PRESENT
+plain.zip	refined	zip
+plain.zip	zipkind	ZIP
+plain.zip	meta.status	NOT_SUPPORTED
+archive_disguised.pdf	refined	zip
+archive_disguised.pdf	mismatch	true
+archive_disguised.pdf	finding:EXTENSION_MISMATCH	
+notes_as_jar.jar	refined	docx
+notes_as_jar.jar	mismatch	true
+library.jar	refined	jar
+library.jar	zipkind	JAR
+ambiguous.zip	zipkind	AMBIGUOUS_OFFICE_OR_APK
+ambiguous.zip	refined	zip
+demo.apk	refined	apk
+demo.apk	zipkind	APK
+demo.apk	meta.status	EXTRACTED
+demo.apk	field:APK.manifest|Package	com.example.demo
+demo.apk	field:APK.manifest|VersionCode	7
+demo.apk	field:APK.manifest|VersionName	1.2.3
+demo.apk	field:APK.sdk|MinSdkVersion	29
+demo.apk	field:APK.sdk|TargetSdkVersion	34
+demo.apk	field:APK.permission|uses-permission	android.permission.INTERNET
+demo.apk	field:APK.permission|uses-permission	android.permission.CAMERA maxSdk=30
+demo.apk	field:APK.application|Debuggable	true
+demo.apk	field:APK.application|AllowBackup	false
+demo.apk	field:APK.application|Label	Demo
+demo.apk	field:APK.component|activity	com.example.demo.MainActivity exported=true actions=[android.intent.action.MAIN] launcher=yes
+demo.apk	field:APK.component|service	com.example.demo.SyncService exported=false
+demo.apk	field:APK.component|receiver	com.example.demo.BootReceiver exported=true permission=android.permission.RECEIVE_BOOT_COMPLETED actions=[android.intent.action.BOOT_COMPLETED]
+demo.apk	field:APK.signer|Subject	CN=Blackbox Test Signer
+demo.apk	field:APK.signer|Issuer	CN=Blackbox Test Signer
+demo.apk	field:APK.signer|SerialNumber	6fe7bddfe5e74ee2fc60d5ae1bc641095c3993c3
+demo.apk	field:APK.signer|SHA256Fingerprint	16:53:2F:42:1D:A1:01:09:5E:72:B2:C9:44:D7:BA:B2:43:F6:51:4F:48:EC:F7:12:C6:EC:EC:DF:BB:DE:D5:9F
+demo.apk	field:APK.signer|NotBefore	2026-10-30T05:26:40Z
+demo.apk	field:APK.signer|NotAfter	2036-10-27T05:26:40Z
+demo.apk	field:structure|DexFileCount	1
+demo.apk	field:structure|SigningBlockV2V3Present	no
+demo.apk	note:Signer certificates were parsed	
+traversal.zip	finding:PATH_TRAVERSAL	
+traversal.zip	finding:ABSOLUTE_PATH	
+traversal.zip	finding:DRIVE_LETTER_PATH	
+traversal.zip	finding:BACKSLASH_SEPARATOR	
+traversal.zip	finding:DUPLICATE_ENTRY_NAME	
+traversal.zip	finding:EXECUTABLE_CONTENT_PRESENT	
+traversal.zip	entries	7
+bomb.zip	finding:EXCESSIVE_COMPRESSION_RATIO	
+bomb.zip	entry:payload.bin|measured	20971520
+bomb.zip	entry:payload.bin|crc	ok
+encrypted_zipcrypto.zip	zip.enc:secret.txt	TRADITIONAL_PKWARE_ZIPCRYPTO
+encrypted_zipcrypto.zip	finding:ENCRYPTED_ENTRY	
+aes_synthetic.zip	zip.enc:vault.bin	WINZIP_AES
+aes_synthetic.zip	zip.enc.bits:vault.bin	256
+aes_synthetic.zip	zip.enc.actual:vault.bin	8
+nested.zip	nested:inner.zip	ZIP
+nested.zip	nested.entry:inner.zip|secret.txt	
+nested.zip	finding:NESTED_ARCHIVE	
+deep_nested.zip	finding:NESTING_LIMIT_REACHED	
+truncated.zip	refined	zip-invalid
+truncated.zip	parseerror	no end-of-central-directory signature found
+trailing.zip	zip.trailing	21
+trailing.zip	finding:TRAILING_DATA_AFTER_ARCHIVE	
+prepended.zip	refined	<none>
+prepended.zip	embedded:zip@10	
+prepended.zip	zip.prepended	10
+fake_eocd_comment.zip	entries	2
+fake_eocd_comment.zip	absent:EOCD_COMMENT_LENGTH_INCONSISTENT	
+fake_eocd_comment.zip	finding:MULTIPLE_EOCD_SIGNATURES	
+many_entries.zip	entries	300
+zip64_entries.zip	entry:big64.bin|measured	70000
+zip64_entries.zip	entry:big64.bin|crc	ok
+local_name_mismatch.zip	finding:LOCAL_NAME_MISMATCH	
+crc_bad.zip	finding:CRC_MISMATCH	
+symlink.zip	finding:SYMLINK_ENTRY	
+symlink.zip	finding:ABSOLUTE_PATH	
+size_lie.zip	finding:DECLARED_SIZE_MISMATCH	
+huge_cd_claim.zip	parseerror	central directory size
+bad_manifest.apk	refined	apk
+bad_manifest.apk	meta.status	EXTRACTION_FAILED
+exif_photo.jpg	refined	jpeg
+exif_photo.jpg	meta.status	EXTRACTED
+exif_photo.jpg	field:EXIF|Make	BlackboxCam
+exif_photo.jpg	field:EXIF|Model	Model-X1
+exif_photo.jpg	field:EXIF|Software	BBTest 1.0
+exif_photo.jpg	field:EXIF|DateTime	2024:05:01 12:00:00
+exif_photo.jpg	field:EXIF.Exif|DateTimeOriginal	2024:05:01 11:58:30
+exif_photo.jpg	field:EXIF.Exif|OffsetTimeOriginal	+02:00
+exif_photo.jpg	field:EXIF.GPS|GPSLatitudeDecimal	37.774917
+exif_photo.jpg	field:EXIF.GPS|GPSLongitudeDecimal	-122.419389
+exif_photo.jpg	field:structure|ImageWidth	64
+exif_photo.jpg	field:structure|ImageHeight	48
+text_photo.png	field:PNG.tEXt|Title	Sample Title
+text_photo.png	field:PNG.zTXt|Comment	zlib compressed note
+text_photo.png	field:PNG.iTXt|Keywords	alpha beta
+text_photo.png	field:EXIF|Make	BlackboxCam
+text_photo.png	field:structure|ImageWidth	64
+exif_photo.webp	refined	webp
+exif_photo.webp	field:EXIF|Model	Model-X1
+exif_photo.webp	field:structure|ImageWidth	64
+exif_photo.webp	field:structure|ImageHeight	48
+plain.jpg	meta.status	NO_METADATA_PRESENT
+plain.png	meta.status	NO_METADATA_PRESENT
+plain.png	field:structure|ImageWidth	64
+jpeg_appended.jpg	appended.bytes	4
+jpeg_appended.jpg	appended.zero	false
+jpeg_appended.jpg	finding:APPENDED_DATA	
+jpeg_padded.jpg	appended.bytes	16
+jpeg_padded.jpg	appended.zero	true
+jpeg_padded.jpg	finding:TRAILING_ZERO_PADDING	
+png_appended.png	appended.bytes	12
+png_appended.png	appended.zero	false
+png_with_zip.png	refined	png
+png_with_zip.png	embedded:zip@	
+png_crc_bad.png	meta.status	EXTRACTION_FAILED
+png_crc_bad.png	error:CRC mismatch in chunk IHDR	
+sample.tif	refined	tiff-le
+sample.tif	field:TIFF|ImageWidth	128
+sample.tif	field:TIFF|ImageLength	96
+sample.tif	field:TIFF|Make	Tiffco
+sample.tif	field:TIFF|Software	TiffSoft
+sample.tif	field:TIFF.Exif|DateTimeOriginal	2023:12:31 23:59:59
+exif_loop.tif	meta.status	NO_METADATA_PRESENT
+exif_loop.tif	note:directory loop	
+info.pdf	refined	pdf
+info.pdf	meta.status	EXTRACTED
+info.pdf	field:PDF.Info|Title	Quarterly (Q3) \ Review
+info.pdf	field:PDF.Info|Author	Zoë Za
+info.pdf	field:PDF.Info|Producer	BlackboxPDF 1.0
+info.pdf	field:PDF.Info|CreationDate	2024-05-01T12:00:00 (UTC+02:00)
+info.pdf	field:PDF.Info|ModDate	2024-05-02T00:00:00 (no time zone recorded)
+info.pdf	field:structure|PDFVersion	1.4
+encrypted.pdf	meta.status	NOT_SUPPORTED
+encrypted.pdf	absent:PDF.Info|Title	
+no_info.pdf	meta.status	NO_METADATA_PRESENT
+incremental.pdf	finding:PDF_INCREMENTAL_UPDATES	
+incremental.pdf	appended.zero	false
+truncated_header.pdf	meta.status	EXTRACTION_FAILED
+tagged.mp3	refined	mp3-id3
+tagged.mp3	meta.status	EXTRACTED
+tagged.mp3	field:ID3|Title	Song Title
+tagged.mp3	field:ID3|Artist	Band
+tagged.mp3	field:ID3|Album	Album One
+tagged.mp3	field:ID3|Year	2023
+tagged.mp3	field:ID3|Genre	Rock
+tagged.mp3	field:ID3.COMM|Comment[eng]	note here
+tagged.mp3	field:ID3.APIC|Picture	type=3 mime=image/png bytes=9
+tagged.mp3	field:ID3v1|Title	V1 Title
+tagged.mp3	field:ID3v1|Year	1999
+tagged.mp3	field:structure|MPEGVersion	MPEG-1
+tagged.mp3	field:structure|Layer	Layer III
+tagged.mp3	field:structure|BitrateKbpsFirstFrame	128
+tagged.mp3	field:structure|SampleRateHz	44100
+tagged.mp3	field:structure|ChannelMode	joint stereo
+tagged.flac	refined	flac
+tagged.flac	field:FLAC.Vorbis|TITLE	Flac Song
+tagged.flac	field:FLAC.Vorbis|ARTIST	Flac Artist
+tagged.flac	field:FLAC.Vorbis|DATE	2022
+tagged.flac	field:FLAC.Picture|Picture	type=3 mime=image/png bytes=4
+tagged.flac	field:structure|SampleRateHz	44100
+tagged.flac	field:structure|Channels	2
+tagged.flac	field:structure|BitsPerSample	16
+tagged.flac	field:structure|TotalSamples	441000
+tagged.flac	field:structure|DurationSeconds	10.000
+tagged.flac	field:structure|StreamMD5	000102030405060708090a0b0c0d0e0f
+bare.flac	meta.status	NO_METADATA_PRESENT
+bare.flac	note:STREAMINFO MD5 is zero	
+tagged.wav	refined	wav
+tagged.wav	field:WAV.INFO|Title	Wav Title
+tagged.wav	field:WAV.INFO|Artist	Wav Artist
+tagged.wav	field:WAV.INFO|CreationDate	2021-03-04
+tagged.wav	field:WAV.bext|Description	Field recording
+tagged.wav	field:structure|SampleRateHz	22050
+tagged.wav	field:structure|DurationSeconds	1.000
+bare.wav	meta.status	NO_METADATA_PRESENT
+wav_appended.wav	appended.bytes	7
+wav_appended.wav	appended.zero	false
+wav_truncated.wav	finding:RIFF_SIZE_EXCEEDS_FILE	
+clip.mp4	refined	mp4
+clip.mp4	meta.status	EXTRACTED
+clip.mp4	field:structure|MajorBrand	isom
+clip.mp4	field:MovieHeader|CreationTime	2024-05-01T12:00:00Z (UTC, as recorded by writer)
+clip.mp4	field:structure|DurationSeconds	5.000
+clip.mp4	field:MP4.track1|HandlerType	vide
+clip.mp4	field:MP4.track1|Codec	avc1
+clip.mp4	field:MP4.track1|Width	320
+clip.mp4	field:MP4.track1|Height	240
+clip.mp4	field:MP4.track1|Language	eng
+clip.mp4	field:MP4.track2|Codec	mp4a
+clip.mp4	field:MP4.ilst|Title	Clip Title
+clip.mp4	field:MP4.ilst|Artist	Clip Artist
+clip.mp4	field:MP4.ilst|Date	2024
+clip.mp4	field:MP4.udta|Location	+37.7749-122.4194/
+clip.mov	refined	mov
+clip.mov	absent:MovieHeader|CreationTime	
+clip.mov	note:MovieHeader.CreationTime is zero	
+bad_box.mp4	meta.status	EXTRACTION_FAILED
+sample.db	refined	sqlite3
+sample.db	meta.status	EXTRACTED
+sample.db	field:structure|PageSize	4096
+sample.db	field:structure|TextEncoding	UTF-8
+sample.db	field:structure|DatabasePages	2
+sample.db	field:DB.Header|UserVersion	7
+sample.db	field:DB.Header|ApplicationId	0x00001234
+sample.db	field:DB.Header|SQLiteVersionNumber	3045001
+empty.bin	refined	<none>
+empty.bin	meta.status	NONE
+truncated_png_chunk.png	meta.status	EXTRACTION_FAILED
+huge_png_chunk.png	meta.status	EXTRACTION_FAILED
+bad_jpeg_segment.jpg	meta.status	EXTRACTION_FAILED
+xxe.docx	absent:OOXML.core|Title	
+bad_core.docx	error:docProps/core.xml	
