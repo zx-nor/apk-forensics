@@ -1,2 +1,12 @@
+# Gradle and Android build output
+.gradle/
 build/
+app/build/
+local.properties
+*.apk
+*.aab
+.idea/
+*.iml
+
+# Kotlin/JVM offline build output
 *.class

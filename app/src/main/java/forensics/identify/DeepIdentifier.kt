@@ -35,7 +35,7 @@ data class DeepIdentification(
  */
 class DeepIdentifier(
     private val limits: AnalysisLimits = AnalysisLimits(),
-    private val scratchDir: File = File(System.getProperty("java.io.tmpdir")),
+    private val scratchDir: File = File(System.getProperty("java.io.tmpdir") ?: "."),
 ) {
     private val base = FileIdentifier()
     private val zipAnalyzer = ZipAnalyzer(limits, scratchDir)

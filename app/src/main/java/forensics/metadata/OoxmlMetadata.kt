@@ -7,10 +7,7 @@ import forensics.common.AnalysisLimits
 import forensics.common.BoundedFile
 import forensics.common.FormatException
 import forensics.common.cleanText
-import java.io.ByteArrayInputStream
 import java.io.File
-import javax.xml.stream.XMLInputFactory
-import javax.xml.stream.XMLStreamConstants
 
 /**
  * DOCX/XLSX/PPTX document properties from docProps/core.xml, docProps/app.xml, and docProps/custom.xml.
@@ -60,63 +57,49 @@ object OoxmlMetadataExtractor {
             parse(bytes)
         } catch (e: FormatException) {
             sink.error("$name: ${e.message}")
-        } catch (e: javax.xml.stream.XMLStreamException) {
-            sink.error("$name: XML is malformed or refers to an entity that is not allowed (${e.message?.lineSequence()?.firstOrNull() ?: "no detail"})")
         }
     }
 
-    private fun factory(): XMLInputFactory = XMLInputFactory.newFactory().apply {
-        setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false)
-        setProperty(XMLInputFactory.SUPPORT_DTD, false)
-        setProperty(XMLInputFactory.IS_COALESCING, true)
-    }
-
     private fun parseFlat(bytes: ByteArray, group: String, keys: Map<String, String>, sink: MetadataSink, limits: AnalysisLimits) {
-        val r = factory().createXMLStreamReader(ByteArrayInputStream(bytes))
-        try {
-            var current: String? = null
-            val text = StringBuilder()
-            while (r.hasNext()) {
-                when (r.next()) {
-                    XMLStreamConstants.DTD -> sink.note("$group: document type declaration present; not resolved.")
-                    XMLStreamConstants.START_ELEMENT -> {
-                        val local = r.localName
-                        current = if (keys.containsKey(local)) local else null
-                        text.setLength(0)
+        var current: String? = null
+        val text = StringBuilder()
+        for (ev in SafeXml.parse(bytes)) {
+            when (ev) {
+                SafeXml.Event.Doctype -> sink.note("$group: document type declaration present; not resolved.")
+                is SafeXml.Event.Start -> {
+                    current = if (keys.containsKey(ev.localName)) ev.localName else null
+                    text.setLength(0)
+                }
+                is SafeXml.Event.Text -> if (current != null) text.append(ev.text)
+                is SafeXml.Event.End -> {
+                    if (current != null && ev.localName == current) {
+                        sink.add(group, keys.getValue(current), cleanText(text.toString(), limits.maxStringValueLength))
                     }
-                    XMLStreamConstants.CHARACTERS, XMLStreamConstants.CDATA -> if (current != null) text.append(r.text)
-                    XMLStreamConstants.END_ELEMENT -> {
-                        if (current != null && r.localName == current) {
-                            sink.add(group, keys.getValue(current), cleanText(text.toString(), limits.maxStringValueLength))
-                        }
-                        current = null
-                    }
+                    current = null
                 }
             }
-        } finally { r.close() }
+        }
     }
 
     private fun parseCustom(bytes: ByteArray, sink: MetadataSink, limits: AnalysisLimits) {
-        val r = factory().createXMLStreamReader(ByteArrayInputStream(bytes))
-        try {
-            var name: String? = null
-            var inside = false
-            val text = StringBuilder()
-            while (r.hasNext()) {
-                when (r.next()) {
-                    XMLStreamConstants.START_ELEMENT -> if (r.localName == "property") {
-                        name = r.getAttributeValue(null, "name")
-                        inside = true
-                        text.setLength(0)
-                    }
-                    XMLStreamConstants.CHARACTERS, XMLStreamConstants.CDATA -> if (inside) text.append(r.text)
-                    XMLStreamConstants.END_ELEMENT -> if (r.localName == "property" && inside) {
-                        sink.add("OOXML.custom", cleanText(name ?: "(unnamed)", 256),
-                            cleanText(text.toString(), limits.maxStringValueLength))
-                        inside = false
-                    }
+        var name: String? = null
+        var inside = false
+        val text = StringBuilder()
+        for (ev in SafeXml.parse(bytes)) {
+            when (ev) {
+                is SafeXml.Event.Start -> if (ev.localName == "property") {
+                    name = ev.attributes["name"]
+                    inside = true
+                    text.setLength(0)
                 }
+                is SafeXml.Event.Text -> if (inside) text.append(ev.text)
+                is SafeXml.Event.End -> if (ev.localName == "property" && inside) {
+                    sink.add("OOXML.custom", cleanText(name ?: "(unnamed)", 256),
+                        cleanText(text.toString(), limits.maxStringValueLength))
+                    inside = false
+                }
+                SafeXml.Event.Doctype -> sink.note("OOXML.custom: document type declaration present; not resolved.")
             }
-        } finally { r.close() }
+        }
     }
 }

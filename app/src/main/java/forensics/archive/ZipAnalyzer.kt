@@ -83,7 +83,7 @@ class InspectionBudget(limits: AnalysisLimits) {
  */
 class ZipAnalyzer(
     private val limits: AnalysisLimits = AnalysisLimits(),
-    private val scratchDir: File = File(System.getProperty("java.io.tmpdir")),
+    private val scratchDir: File = File(System.getProperty("java.io.tmpdir") ?: "."),
 ) {
     init { require(scratchDir.isDirectory) { "scratch directory does not exist: $scratchDir" } }
 
